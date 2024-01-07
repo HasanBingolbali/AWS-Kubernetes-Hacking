@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eks-hacking
+  labels:
+    app: eks-hacking
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+          app: eks-hacking
+    template:
+        metadata:
+          labels:
+            app: eks-hacking
+        spec:
+          serviceAccountName: stupid-access
+          containers:
+          - name: eks-hacking
+            image: hasannaber123/eks-hacking:latest
+            ports:
+              - containerPort: 3000
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: eks-hacking-service
+spec:
+  selector:
+    app: eks-hacking
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+  type: LoadBalancer
+#hasannaber123/eksHacking:latest
